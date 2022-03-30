@@ -199,9 +199,9 @@
 
       //Remove playingClass transition from keys with event listener 'transitionend'
       function removeKeyTransition(e) {
-          if(e.propertyName !== "transform") {return;};
-          e.target.classList.remove(playingClass);
-        }
+        if(e.propertyName !== "transform") {return;};
+        e.target.classList.remove(playingClass);
+      }
 
       const drumKeys = Array.from(document.querySelectorAll('div > kbd'));
       drumKeys.forEach(key => {
