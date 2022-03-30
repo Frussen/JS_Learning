@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Guess The Color Game</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      html, body {
+        height: 100%;
+        margin: 0;
+        font-family: Verdana, Tahoma, sans-serif;
+      }
+
+      #wrapper {
+        width: 100%;
+        height: 100%;
+        background-color: #222;
+      }
+
+      h1 {
+        width: 100%;
+        height: auto;
+        padding: 7px;
+        margin: 0;
+        background-color: #2C8E99;
+        color: #fff;
+        text-align: center;
+	      text-transform: uppercase;
+        font-size: 2.2em;
+        font-weight: lighter;
+      }
+
+      #color-display {
+        display: block;
+        font-size: 1.2em;
+        padding-bottom: 3px;
+      }
+
+      #navbar {
+        width: 100%;
+        height: 30px;
+        background-color: #fff;
+        text-align: center;
+      }
+
+      button {
+        height: 100%;
+        border: none;
+        background-color: #fff;
+        color: #2C8E99;
+        font-size: 1em;
+        transition: all ease-in-out .2s;
+      }
+
+      button:hover {
+        background-color: #2C8E99;
+        color: #fff;
+      }
+
+      #message {
+        display: inline-block;
+        width: 25%;
+        color: #2C8E99;
+        font-weight: bold;
+        text-transform: uppercase;
+      }
+
+      .selected {
+        background-color: #2C8E99;
+        color: #fff;
+      }
+
+      #container {
+        max-width: 600px;
+        margin: 20px auto;
+      }
+
+      .square{
+        float: left;
+        width: 30%;
+	      padding-bottom: 30%;
+        margin: 1.66%;
+        border-radius: 50px;
+        background-color: aquamarine;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div id="wrapper">
+      <h1 id="header">
+        The Great<span id="color-display">RGB</span>Guessing Game
+      </h1>
+
+      <div id="navbar">
+        <button id="reset">NEW COLORS</button>
+        <span id="message"></span>
+        <button id="easy">EASY</button>
+        <button id="hard" class="selected">HARD</button>
+      </div>
+
+      <div id="container">
+        <div class="square"></div>
+        <div class="square"></div>
+        <div class="square"></div>
+        <div class="square "></div>
+        <div class="square"></div>
+        <div class="square"></div>
+      </div>
+    </div>
+    
+    
+    <script>
+      var numSquares = 6;
+      var colors = [];
+      var pickedColor;
+
+      var squares = document.querySelectorAll(".square");
+      var colorDisplay = document.getElementById("color-display");
+      var messageDisplay = document.getElementById("message");
+      var h1 = document.getElementById("header");
+      var resetButton = document.getElementById("reset");
+      var easyMode = document.getElementById("easy");
+      var hardMode = document.getElementById("hard");
+      var container = document.getElementById("container");
+      //Wanted to try to change all navbar colors when corrected but there are complications...
+      //var navbarElements = document.getElementById("navbar").childNodes;
+      //var selected = document.querySelector(".selected");
+
+      resetButton.addEventListener("click", reset);
+
+      setupSquares();
+      setupMode();
+      reset();
+
+      //Second we set up the squares so that they evaluate the user's choice
+      function setupSquares() {
+        for(var i=0; i<squares.length; i++) {
+          squares[i].addEventListener("click", function() {
+            var clickedColor = this.style.backgroundColor;
+            if(clickedColor == pickedColor) {
+              messageDisplay.textContent = "Correct";
+              resetButton.textContent = "Play Again";
+              changeColors(pickedColor);
+            } else {
+              this.style.backgroundColor = "#222";
+              messageDisplay.textContent = "Try Again";
+            }
+          })
+        }
+      }
+
+      function changeColors(color) {
+        for(var i=0; i<squares.length; i++) {
+          squares[i].style.backgroundColor = color;
+        }
+        /* The selected class doesn't change when classList.add
+        so I cannot change the selected mode color on easy mode.
+        for(var i=1; i<navbarElements.length; i+=2) {
+          navbarElements[i].style.color = color;
+        }
+        selected.style.color = "#fff";
+        selected.style.backgroundColor = color;*/
+        h1.style.backgroundColor = color;
+      }
+
+      //Third we set the value of numSquares based on the chosen mode
+      function setupMode() {
+        easyMode.addEventListener("click", function() {
+          hardMode.classList.remove("selected");
+          this.classList.add("selected");
+          numSquares = 3;
+          container.style.margin = "85px auto";
+          reset();
+        });
+        hardMode.addEventListener("click", function() {
+          easyMode.classList.remove("selected");
+          this.classList.add("selected");
+          numSquares = 6;
+          container.style.margin = "20px auto";
+          reset();
+        });
+      }
+
+      //First we create and reset squares colors asking which is the picked one
+      function reset() {
+        colors = genRandomColors(numSquares);
+        pickedColor = chooseColor();
+        colorDisplay.textContent = pickedColor;
+	      h1.style.backgroundColor = "#2C8E99";
+        resetButton.textContent = "New Colors";
+	      messageDisplay.textContent = "";
+        for(var i=0; i<squares.length; i++) {
+          if(colors[i]) {
+            squares[i].style.display = "block";
+            squares[i].style.backgroundColor = colors[i];
+          } else {
+            squares[i].style.display = "none";
+          }
+        }
+      }
+
+      function chooseColor() {
+        var random = Math.floor(Math.random() * colors.length);
+        return colors[random];
+      }
+
+      function genRandomColors(num) {
+        var arr = [];
+        for(var i=0; i<num; i++) {
+          arr.push(makeColor());
+        }
+        return arr;
+      }
+
+      function makeColor() {
+        var r = Math.floor(Math.random() * 256);
+        var g = Math.floor(Math.random() * 256);
+        var b = Math.floor(Math.random() * 256);
+        return "rgb(" + r + ", " + g + ", " + b + ")";
+      }
+
+    </script>
+  </body>
+</html>
