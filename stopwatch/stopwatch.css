@@ -1,0 +1,42 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  height: 100%;
+  background: orange;
+  font-family: Verdana, Tahoma, sans-serif;
+}
+
+#wrapper {
+  text-align: center;
+  font-size: 2.5em;
+  color: white;
+}
+
+h1, h2, p {
+  font-weight: 120;
+}
+
+p {
+  margin: 50px 0;
+  font-size: 2.3em;
+}
+
+button {
+  width: 180px;
+  margin: 0 10px;
+  padding: 18px 10px;
+  border: solid 1px white;
+  border-radius: 5px;
+  background: orange;
+  color: white;
+  cursor: pointer;
+  font-size: 0.5em;
+}
+
+button:hover {
+  transition: all 0.5s ease-in-out;
+  background: white;
+  color: orange;
+}

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      html, body {
+        height: 100%;
+        margin: 0;
+        font-family: Verdana, Tahoma, sans-serif;
+        background-color: hsl(219, 60%, 80%);
+      }
+
+      #container {
+        display: grid;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translateX(-50%) translateY(-50%);
+        width: 450px;
+        height: 540px;
+        padding: 17px;
+        border: 1px solid gainsboro;
+        border-radius: 2px;
+        box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.2);
+        background-color: white;
+        color: dimgray;
+        grid-template-columns: 25% 25% 25% 25%;
+        grid-template-rows: 111px auto auto auto auto auto;
+      }
+
+      .grid-item {
+        display: flex;
+        margin: 11px 7px;
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 2px;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.3em;
+        cursor: pointer;
+        transition: .2s;
+      }
+
+      .grid-item:hover {
+        border: 1px solid #bbb;
+        background-color: #f1f1f1;
+        -webkit-box-shadow: inset 0px 1px 2px 0px rgba(0, 0, 0, 0.2);
+        box-shadow: inset 0px 1px 2px 0px rgba(0, 0, 0, 0.2);
+      }
+
+      .grid-item:active {
+        color: black;
+      }
+
+      #displayer {
+        grid-column: 1 / 5;
+        margin: 15px 7px;
+        background-color: hsl(222, 100%, 97%);
+        cursor: auto;
+        overflow: auto;
+      }
+
+      .operator  {
+        background-color: #ddd;
+        border-color: #bbb;
+      }
+
+      .operator:hover {
+        background-color: #ccc;
+        border-color: #aaa;
+      }
+
+      #equal-sign {
+        grid-area: 3 / 4 / 7 / 5;
+        background-color: cornflowerblue;
+        border: 1px solid royalblue;
+        color: white;
+        font-size: 2.7em;
+        transition: .01s;
+      }
+
+      #equal-sign:hover {
+        background-color: hsl(219, 83%, 63%);
+        border-color: hsl(225, 77%, 53%);
+      }
+
+      #equal-sign:active {
+        font-size: 2.1em;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <div class="grid-item" id="displayer"></div>
+      <div class="grid-item operator">+</div>
+      <div class="grid-item operator">-</div>
+      <div class="grid-item operator">x</div>
+      <div class="grid-item operator">÷</div>
+      <div class="grid-item number" id="bb">7</div>
+      <div class="grid-item number">8</div>
+      <div class="grid-item number">9</div>
+      <div class="grid-item" id="equal-sign">=</div>
+      <div class="grid-item number">4</div>
+      <div class="grid-item number">5</div>
+      <div class="grid-item number">6</div>
+      <div class="grid-item number">1</div>
+      <div class="grid-item number">2</div>
+      <div class="grid-item number">3</div>
+      <div class="grid-item number">0</div>
+      <div class="grid-item number">.</div>
+      <div class="grid-item" id="canc">C</div>
+    </div>
+    
+    <script>
+      const numbers = document.getElementsByClassName("number");
+      const operators = document.getElementsByClassName("operator");
+      const equal = document.getElementById("equal-sign");
+      const canc = document.getElementById("canc");
+
+      //Add event listener and a display function to numbers
+      for(let i of numbers){
+        i.addEventListener("click", function() {displayNum(this.textContent)});
+      }
+
+      function displayNum(num) {
+        document.getElementById("displayer").innerHTML += num;
+      }
+
+      //Add event listener and a display function to operators
+      for(let i of operators){
+        i.addEventListener("click", function() {displayOp(this.textContent)});
+      }
+
+      function displayOp(ope) {
+        let string = document.getElementById("displayer").innerHTML;
+        let len = string.length;
+        if(len != 0) {
+          if(string[len-1] == "+" || string[len-1] == "-" || string[len-1] == "x" || string[len-1] == "÷") {
+            string = string.substring(0, len-1) + ope;
+          } else {
+            string += ope;
+          }
+        } else {
+          string = 0 + ope;
+        }
+        document.getElementById("displayer").innerHTML = string;
+      }
+
+      //Add event listener and a display function to equal sign
+      equal.addEventListener("click", computeValue);
+
+      function computeValue() {
+        
+        let string = document.getElementById("displayer").innerHTML;
+        
+        //creating two arrays of all the numbers and of all the operations present in the input string
+        var allNum = string.split(/\+|\-|\x|\÷/g);
+        var allOpe = string.replace(/[0-9]|\./g, "").split("");
+
+        console.log(allOpe);
+        console.log(allNum);
+        console.log("----------------------");
+
+        //seraching for each operator in allOpe and computing the numbers at the right position
+        var divide = allOpe.indexOf("÷");
+        while(divide != -1) {
+          allNum.splice(divide, 2, allNum[divide] / allNum[divide+1]);
+          allOpe.splice(divide, 1);
+          divide = allOpe.indexOf("÷");
+        }
+
+        var divide = allOpe.indexOf("x");
+        while(divide != -1) {
+          allNum.splice(divide, 2, allNum[divide] * allNum[divide+1]);
+          allOpe.splice(divide, 1);
+          divide = allOpe.indexOf("x");
+        }
+
+        var divide = allOpe.indexOf("-");
+        while(divide != -1) {
+          allNum.splice(divide, 2, allNum[divide] - allNum[divide+1]);
+          allOpe.splice(divide, 1);
+          divide = allOpe.indexOf("-");
+        }
+
+        //using parseFloat is necessary, otherwise it will do a string concatenation
+        var divide = allOpe.indexOf("+");
+        while(divide != -1) {
+          allNum.splice(divide, 2, parseFloat(allNum[divide]) + parseFloat(allNum[divide+1]));
+          allOpe.splice(divide, 1);
+          divide = allOpe.indexOf("+");
+        }
+
+        document.getElementById("displayer").innerHTML = allNum[0];
+      }
+
+      //Add event listener and a display function to canc
+      canc.addEventListener("click", function(){
+        document.getElementById("displayer").innerHTML = "";
+      });
+
+    </script>
+  </body>
+</html>
