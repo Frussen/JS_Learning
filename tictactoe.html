@@ -1,0 +1,162 @@
+<!-- I tried to recreate this one but turned out it uses scss and bootstrap so I will skip it-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tic Tac Toe Game</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+
+@import url(https://fonts.googleapis.com/css?family=Yesteryear);
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html, body {
+        width: 100%;
+        height: 100%;
+	      background-image: linear-gradient(to bottom, #dddbd1, #d2dbdc);
+      }
+
+      .app {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        margin: auto;
+        width : 80%;
+	      height : 70%;
+	      max-width: 550px;
+	      background-color : #508ABB;
+	      box-shadow: 0 5px 30px -5px rgba(0,0,0, .85);
+	      border-radius: 10px;
+      }
+
+      .app-container, .app-row {
+        height: 100%;
+      }
+
+      .play-box, .symbol-option {
+	      font-family: 'Yesteryear', cursive;
+      }
+
+      .play-box {
+        border-bottom : 2px solid #fff;
+	      border-right : 2px solid #fff;
+	      height : 33.3%;
+	      cursor: pointer;
+	      position: relative;
+      }
+
+      .last-right {
+        border-right: none;
+      }
+
+      .last-bottom {
+        border-bottom: none;
+      }
+
+      .win {
+        animation: winAnim .5s ease-out infinite;
+      }
+
+      .symbol {        
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        margin: auto;width: 50%;
+		    height : 50px;
+		    text-align: center;
+        line-height : 50px;
+        font-size: 35px;
+        color : white;
+      }
+
+      .content{
+        padding : 15px;
+        text-align: center;
+        margin : 0;
+      }
+
+      .content-body {
+        line-height: 2;
+      }
+
+      .symbol-options {
+		    width: 200px;
+		    margin-top: 10px;
+      }
+
+      .symbol-option:first-child {
+				margin-right: 10px;
+			}
+
+			.symbol-option:last-child {
+				margin-left: 10px;
+			}
+
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <div class="container-fluid app-container">
+        <div class="row app-row">
+          <div class="col-xs-4 play-box" id="0">
+            <div class="symbol"></div>
+          </div>
+          <div class="col-xs-4 play-box" id="1">
+            <div class="symbol"></div>
+          </div>
+          <div class="col-xs-4 play-box last-right" id="2">
+            <div class="symbol"></div>
+          </div>
+          <div class="col-xs-4 play-box" id="3">
+            <div class="symbol"></div>
+          </div>
+          <div class="col-xs-4 play-box" id="4">
+            <div class="symbol"></div>
+          </div>
+          <div class="col-xs-4 play-box last-right" id="5">
+            <div class="symbol"></div>
+          </div>
+          <div class="col-xs-4 play-box last-bottom" id="6">
+            <div class="symbol"></div>
+          </div>
+          <div class="col-xs-4 play-box last-bottom" id="7">
+            <div class="symbol"></div>
+          </div>
+          <div class="col-xs-4 play-box last-right last-bottom" id="8">
+            <div class="symbol"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade app-modal" tabinfex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+      <div class="modal-dialog modal-size">
+        <div class="modal-content">
+          <h3 class="content-heading">Warning!!!</h3>
+          <hr class="warning-hr">
+          <div class="content-body">
+            Please save your time and don't even think you're smart. 
+            <br><strong><em>I'M SMARTER THAN YOU! HA-HA-HA!!</em></strong>
+            Wanna try me? Chose: <br>
+            <div class="center-block symbol-options">
+              <button class="symbol-option btn btn-default btn-md" data-dismiss="modal">X</button> OR
+              <button class="symbol-option btn btn-default btn-md" data-dismiss="modal">O</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <script>
+
+    </script>
+  </body>
+</html>
